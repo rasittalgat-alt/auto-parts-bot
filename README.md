@@ -1,3 +1,79 @@
+# 🛒 AI Auto Parts Sales Bot (Telegram)
+
+A Telegram bot for an auto parts store with an AI agent built on [n8n](https://n8n.io). Helps clients find the right part using vector search, places orders directly in chat, and automatically notifies the manager and logs to CRM.
+
+## Demo
+
+▶️ **[Watch video demo](https://drive.google.com/file/d/1Ktyc2-2V5n7pDLVUjRpvvfY5coCfC1rr/view?usp=sharing)**
+
+## Features
+
+- **Smart parts search** — client describes what they need in free text; the AI agent searches a vector database (Pinecone) and returns relevant results
+- **In-chat ordering** — client places an order directly in Telegram, no forms or websites needed
+- **Manager notifications** — order is instantly delivered to the manager via Telegram
+- **Google Sheets log** — every order is recorded in a spreadsheet
+- **Bitrix24 CRM** — a lead is automatically created for each order
+- **Session memory** — the bot remembers conversation context
+
+## Architecture
+
+```
+Telegram Trigger
+    │
+    ├─► Template Check ──► Send template / remove buttons
+    │
+    └─► AI Agent (Google Gemini / OpenAI)
+            │   Tools:
+            │   ├─ Parts Search   — vector search via Pinecone
+            │   └─ Place Order    — create and submit order
+            │
+            └─► On order placed:
+                    ├─ Notify manager via Telegram
+                    ├─ Log to Google Sheets
+                    └─ Create lead in Bitrix24
+```
+
+## Tech Stack
+
+| Component | Technology |
+|-----------|-----------|
+| Automation | n8n |
+| AI model | Google Gemini / OpenAI GPT |
+| Vector database | Pinecone |
+| Embeddings | OpenAI Embeddings |
+| Messaging | Telegram Bot API |
+| Logging | Google Sheets |
+| CRM | Bitrix24 |
+
+## Setup
+
+1. **Import the workflow** — upload `workflow.json` to your n8n instance
+2. **Configure credentials:**
+   - Telegram Bot token
+   - Google Gemini or OpenAI API key
+   - Pinecone API key and index name
+   - Google Sheets credentials
+   - Bitrix24 webhook
+3. **Upload your parts catalog** to Pinecone (via a separate ingestion pipeline)
+4. **Update node parameters:**
+   - Manager chat ID in `Send Order to Manager`
+   - Spreadsheet ID in `Log Order to Sheets`
+5. **Activate** the workflow
+
+## How It Works
+
+1. Client sends a message to Telegram ("I need brake pads for BMW E46")
+2. AI agent performs vector search in Pinecone and finds matching parts
+3. Bot presents options and clarifies details
+4. Client confirms — bot places the order
+5. Manager gets notified, order is logged to Google Sheets and Bitrix24
+
+## Author
+
+[Talgat Rashit](https://github.com/rasittalgat-alt)
+
+---
+
 # 🛒 ИИ Продажник — Автозапчасти (Telegram-бот)
 
 Telegram-бот для магазина автозапчастей с AI-агентом на базе [n8n](https://n8n.io). Помогает клиентам найти нужную запчасть, оформить заказ и автоматически передаёт его менеджеру и в CRM.
@@ -44,23 +120,6 @@ Telegram Trigger
 | Мессенджер | Telegram Bot API |
 | Логирование | Google Sheets |
 | CRM | Bitrix24 |
-
-## Узлы воркфлоу (18 штук)
-
-| Узел | Назначение |
-|------|------------|
-| Telegram Trigger | Точка входа — получает все сообщения |
-| Podgotovka vvoda | Подготовка и нормализация входных данных |
-| AI Agent | Основная логика поиска и оформления через LLM |
-| Google Gemini / OpenAI | LLM-модели (настраиваются) |
-| Pamyat sessii | Буферная память для контекста разговора |
-| Poisk zapchastei (Pinecone) | Векторный поиск по базе запчастей |
-| Embeddings OpenAI | Преобразование запроса в вектор для поиска |
-| Oformlenie zakaza (Tool) | Создаёт заказ и передаёт дальше |
-| Send Order to Manager | Уведомление менеджера в Telegram |
-| Log Order to Sheets | Запись заказа в Google Sheets |
-| Bitrix24 - Sozdat lid | Создание лида в Bitrix24 CRM |
-| Formatirovanie otveta | Форматирование ответа для Telegram |
 
 ## Установка и настройка
 
