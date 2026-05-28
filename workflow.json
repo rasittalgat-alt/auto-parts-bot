@@ -279,7 +279,7 @@
                   {
                       "parameters":  {
                                          "method":  "POST",
-                                         "url":  "https://api.telegram.org/bot6281751779:AAF_We3aaj2MstFX5Q8K-6dqzizJ4kbqits/sendMessage",
+                                         "url":  "https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/sendMessage",
                                          "sendBody":  true,
                                          "bodyParameters":  {
                                                                 "parameters":  [
@@ -431,7 +431,7 @@
                   {
                       "parameters":  {
                                          "method":  "POST",
-                                         "url":  "https://api.telegram.org/bot6281751779:AAF_We3aaj2MstFX5Q8K-6dqzizJ4kbqits/sendMessage",
+                                         "url":  "https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/sendMessage",
                                          "sendBody":  true,
                                          "bodyParameters":  {
                                                                 "parameters":  [
@@ -600,7 +600,7 @@
                   {
                       "parameters":  {
                                          "method":  "POST",
-                                         "url":  "https://api.telegram.org/bot6281751779:AAF_We3aaj2MstFX5Q8K-6dqzizJ4kbqits/sendMessage",
+                                         "url":  "https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/sendMessage",
                                          "sendBody":  true,
                                          "bodyParameters":  {
                                                                 "parameters":  [
@@ -635,7 +635,7 @@
                   {
                       "parameters":  {
                                          "method":  "POST",
-                                         "url":  "https://api.telegram.org/bot6281751779:AAF_We3aaj2MstFX5Q8K-6dqzizJ4kbqits/editMessageReplyMarkup",
+                                         "url":  "https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/editMessageReplyMarkup",
                                          "sendBody":  true,
                                          "bodyParameters":  {
                                                                 "parameters":  [
@@ -720,3 +720,4 @@
                   }
               ]
 }
+
