@@ -1,723 +1,712 @@
-﻿{
-    "settings":  {
-                     "executionOrder":  "v1",
-                     "timezone":  "Asia/Almaty",
-                     "callerPolicy":  "workflowsFromSameOwner",
-                     "availableInMCP":  false,
-                     "timeSavedMode":  "fixed",
-                     "binaryMode":  "separate"
-                 },
-    "tags":  [
-
-             ],
-    "name":  "🛒 ИИ Продажник - Автозапчасти MVP",
-    "connections":  {
-                        "Telegram Trigger":  {
-                                                 "main":  [
-                                                              [
-                                                                  {
-                                                                      "node":  "Podgotovka vvoda",
-                                                                      "type":  "main",
-                                                                      "index":  0
-                                                                  }
-                                                              ]
-                                                          ]
-                                             },
-                        "Google Gemini Chat Model":  {
-                                                         "ai_languageModel":  [
-                                                                                  [
-                                                                                      {
-                                                                                          "node":  "AI Agent",
-                                                                                          "type":  "ai_languageModel",
-                                                                                          "index":  1
-                                                                                      }
-                                                                                  ]
-                                                                              ]
-                                                     },
-                        "Pamyat sessii":  {
-                                              "ai_memory":  [
-                                                                [
-                                                                    {
-                                                                        "node":  "AI Agent",
-                                                                        "type":  "ai_memory",
-                                                                        "index":  0
-                                                                    }
-                                                                ]
-                                                            ]
-                                          },
-                        "AI Agent":  {
-                                         "main":  [
-                                                      [
-                                                          {
-                                                              "node":  "Formatirovanie otveta",
-                                                              "type":  "main",
-                                                              "index":  0
-                                                          }
-                                                      ]
-                                                  ]
-                                     },
-                        "Formatirovanie otveta":  {
-                                                      "main":  [
-                                                                   [
-                                                                       {
-                                                                           "node":  "Otpravka v Telegram",
-                                                                           "type":  "main",
-                                                                           "index":  0
-                                                                       }
-                                                                   ]
-                                                               ]
-                                                  },
-                        "OpenAI Chat Model":  {
-                                                  "ai_languageModel":  [
-                                                                           [
-                                                                               {
-                                                                                   "node":  "AI Agent",
-                                                                                   "type":  "ai_languageModel",
-                                                                                   "index":  0
-                                                                               }
-                                                                           ]
-                                                                       ]
-                                              },
-                        "Embeddings OpenAI":  {
-                                                  "ai_embedding":  [
-                                                                       [
-                                                                           {
-                                                                               "node":  "Poisk zapchastei (Pinecone)",
-                                                                               "type":  "ai_embedding",
-                                                                               "index":  0
-                                                                           }
-                                                                       ]
-                                                                   ]
-                                              },
-                        "Poisk zapchastei (Pinecone)":  {
-                                                            "ai_tool":  [
-                                                                            [
-                                                                                {
-                                                                                    "node":  "AI Agent",
-                                                                                    "type":  "ai_tool",
-                                                                                    "index":  0
-                                                                                }
-                                                                            ]
-                                                                        ]
-                                                        },
-                        "Oformlenie zakaza":  {
-                                                  "ai_tool":  [
-                                                                  [
-                                                                      {
-                                                                          "node":  "AI Agent",
-                                                                          "type":  "ai_tool",
-                                                                          "index":  0
-                                                                      }
-                                                                  ]
-                                                              ]
-                                              },
-                        "Otpravka v Telegram":  {
-                                                    "main":  [
-                                                                 [
-                                                                     {
-                                                                         "node":  "Order Check",
-                                                                         "type":  "main",
-                                                                         "index":  0
-                                                                     }
-                                                                 ]
-                                                             ]
-                                                },
-                        "Order Check":  {
-                                            "main":  [
-                                                         [
-                                                             {
-                                                                 "node":  "Send Order to Manager",
-                                                                 "type":  "main",
-                                                                 "index":  0
-                                                             },
-                                                             {
-                                                                 "node":  "Log Order to Sheets",
-                                                                 "type":  "main",
-                                                                 "index":  0
-                                                             },
-                                                             {
-                                                                 "node":  "Bitrix24 - Sozdat lid",
-                                                                 "type":  "main",
-                                                                 "index":  0
-                                                             }
-                                                         ]
-                                                     ]
-                                        },
-                        "Podgotovka vvoda":  {
-                                                 "main":  [
-                                                              [
-                                                                  {
-                                                                      "node":  "Proverka shablona",
-                                                                      "type":  "main",
-                                                                      "index":  0
-                                                                  },
-                                                                  {
-                                                                      "node":  "Udalit knopki",
-                                                                      "type":  "main",
-                                                                      "index":  0
-                                                                  }
-                                                              ]
-                                                          ]
-                                             },
-                        "Proverka shablona":  {
-                                                  "main":  [
-                                                               [
-                                                                   {
-                                                                       "node":  "Otpravka shablona",
-                                                                       "type":  "main",
-                                                                       "index":  0
-                                                                   }
-                                                               ],
-                                                               [
-                                                                   {
-                                                                       "node":  "AI Agent",
-                                                                       "type":  "main",
-                                                                       "index":  0
-                                                                   }
-                                                               ]
-                                                           ]
-                                              }
-                    },
-    "nodes":  [
-                  {
-                      "parameters":  {
-                                         "updates":  [
-                                                         "message",
-                                                         "callback_query"
-                                                     ],
-                                         "additionalFields":  {
-
-                                                              }
-                                     },
-                      "id":  "tg-trigger",
-                      "name":  "Telegram Trigger",
-                      "type":  "n8n-nodes-base.telegramTrigger",
-                      "typeVersion":  1.2,
-                      "position":  [
-                                       208,
-                                       400
-                                   ],
-                      "webhookId":  "d21723bb-48fd-46bc-a952-736a9c163ffa",
-                      "alwaysOutputData":  true,
-                      "credentials":  null
-                  },
-                  {
-                      "parameters":  {
-                                         "jsCode":  "const data = $input.first().json;\nlet userMessage = \u0027\u0027;\nlet chatId = \u0027\u0027;\nlet firstName = \u0027\u0027;\nlet callbackType = \u0027text\u0027;\nlet callbackData = null;\nlet skipAI = false;\nlet templateText = \u0027\u0027;\nlet templateMarkup = \u0027\u0027;\nlet callbackMessageId = null;\n\nif (data.callback_query) {\n  chatId = String(data.callback_query.message.chat.id);\n  firstName = data.callback_query.from.first_name || \u0027\u0027;\n  callbackData = data.callback_query.data;\n  callbackMessageId = data.callback_query.message.message_id;\n\n  if (callbackData === \u0027noop\u0027) {\n    skipAI = true;\n    callbackType = \u0027noop\u0027;\n  } else {\n    const callbackMap = {\n      \u0027confirm_order\u0027: \u0027Да, хочу оформить заказ на эти запчасти\u0027,\n      \u0027cancel_order\u0027: \u0027Отменить заказ\u0027,\n      \u0027new_search\u0027: \u0027Хочу найти другую запчасть\u0027,\n      \u0027add_parts\u0027: \u0027Хочу добавить ещё запчасти к заказу\u0027,\n      \u0027contact_manager\u0027: \u0027Хочу связаться с менеджером напрямую\u0027,\n      \u0027finish\u0027: \u0027Спасибо, завершить диалог\u0027\n    };\n    if (callbackMap[callbackData]) {\n      callbackType = callbackData;\n      userMessage = callbackMap[callbackData];\n    } else {\n      callbackType = \u0027callback\u0027;\n      userMessage = callbackData;\n    }\n  }\n} else if (data.message) {\n  chatId = String(data.message.chat.id);\n  firstName = data.message.from.first_name || \u0027\u0027;\n  userMessage = data.message.text || \u0027/start\u0027;\n  if (data.message.contact) {\n    callbackType = \u0027contact\u0027;\n    userMessage = \u0027Мой номер телефона: \u0027 + data.message.contact.phone_number;\n  }\n}\n\nvar templates = {\n  \u0027_start\u0027: {\n    text: \u0027Здравствуйте🙋‍��️! Я - консультант АвтоДеталь. Я помогу подобрать запчасти для вашего автомобиля. Укажите марку, модель авто и какая деталь нужна🚗.\u0027,\n    buttons: [[{text: \u0027\\uD83D\\uDD0D Найти запчасть\u0027, callback_data: \u0027new_search\u0027}]]\n  },\n  \u0027new_search\u0027: {\n    text: \u0027Какую запчасть ищем? Укажите название детали и марку/модель авто.\\nНапример: колодки Toyota Camry 2018\u0027,\n    buttons: []\n  },\n  \u0027add_parts\u0027: {\n    text: \u0027Какую запчасть добавить к заказу? Укажите название детали (2-3 слова).\\nНапример: масляный фильтр Camry\u0027,\n    buttons: []\n  },\n  \u0027cancel_order\u0027: {\n    text: \u0027Заказ отменён. Если передумаете — я на связи!\u0027,\n    buttons: [[{text: \u0027\\uD83D\\uDD0D Найти запчасть\u0027, callback_data: \u0027new_search\u0027}]]\n  },\n  \u0027finish\u0027: {\n    text: \u0027Спасибо за заказ! Менеджер свяжется с вами в ближайшее время. До встречи!\u0027,\n    buttons: [[{text: \u0027\\uD83D\\uDD0D Найти запчасть\u0027, callback_data: \u0027new_search\u0027}]]\n  },\n  \u0027contact_manager\u0027: {\n    text: \u0027Свяжитесь с нашим менеджером:\\nТелефон: +7 711 463 6644\\nМы ответим в рабочее время (09:00-18:00).\u0027,\n    buttons: [[{text: \u0027\\uD83D\\uDD0D Найти запчасть\u0027, callback_data: \u0027new_search\u0027}]]\n  }\n};\n\nvar templateKey = \u0027\u0027;\nif (userMessage === \u0027/start\u0027) {\n  templateKey = \u0027_start\u0027;\n} else if (templates[callbackType]) {\n  templateKey = callbackType;\n}\n\nif (templateKey) {\n  skipAI = true;\n  var t = templates[templateKey];\n  templateText = t.text;\n  templateMarkup = JSON.stringify({inline_keyboard: t.buttons});\n}\n\nreturn {\n  json: {\n    userMessage,\n    chatId,\n    firstName,\n    callbackType,\n    callbackData,\n    skipAI,\n    templateText,\n    templateMarkup,\n    callbackMessageId\n  }\n};"
-                                     },
-                      "id":  "prep-input",
-                      "name":  "Podgotovka vvoda",
-                      "type":  "n8n-nodes-base.code",
-                      "typeVersion":  2,
-                      "position":  [
-                                       480,
-                                       400
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "promptType":  "define",
-                                         "text":  "={{ $json.userMessage }}",
-                                         "needsFallback":  true,
-                                         "options":  {
-                                                         "systemMessage":  "=Ты — профессиональный консультант по продаже автозапчастей компании \"АвтоДеталь\". Твоя задача — помочь клиенту подобрать нужные запчасти и оформить заказ.\n\nПРАВИЛА ОБЩЕНИЯ:\n- Отвечай ТОЛЬКО на русском языке\n- Будь вежлив, профессионален и лаконичен (3-5 строк максимум)\n- НЕ используй символы Markdown: * _ ` [ ]\n- Используй эмодзи умеренно для дружелюбности\n\nСЦЕНАРИЙ РАБОТЫ:\n1. Приветствуй клиента и спроси какая запчасть нужна\n2. Уточни: марка и модель авто, год выпуска, какая деталь нужна\n3. Используй инструмент search_parts для поиска по каталогу. Ищи короткими запросами: название детали + марка авто (2-3 слова)\n4. Представь клиенту найденные варианты с ценами\n5. Спроси клиента: хочет ли он добавить ещё запчасти или готов оформить заказ\n6. Если клиент хочет добавить — повтори поиск для новых деталей\n7. Когда клиент готов оформить — спроси имя и номер телефона для связи\n8. Используй create_order для оформления заказа. ПЕРЕДАЙ ПАРАМЕТРЫ ТОЧНО ТАК: items, customer_name, phone\n9. Подтверди заказ клиенту. ОБЯЗАТЕЛЬНО укажи в подтверждении: Клиент: (имя). Телефон: (номер). Номер заказа, все позиции с ценами, ИТОГОВУЮ СУММУ, и сообщи что менеджер свяжется в ближайшее время\n\nЕСЛИ ЗАПЧАСТЬ НЕ НАЙДЕНА:\n- Попробуй искать короче: только название детали или только марку авто\n- Предложи уточнить запрос или указать артикул\n- Предложи оставить заявку — менеджер подберет вручную\n\nВАЖНО:\n- Всегда используй search_parts перед тем как называть цены или наличие\n- Не выдумывай цены и наличие — бери только данные из каталога\n- При оформлении заказа обязательно собери: имя и телефон клиента\n- ВСЕГДА указывай ИТОГОВУЮ СУММУ заказа при подтверждении\n- Если клиент пишет /start — поприветствуй и спроси чем помочь"
-                                                     }
-                                     },
-                      "id":  "ai-agent",
-                      "name":  "AI Agent",
-                      "type":  "@n8n/n8n-nodes-langchain.agent",
-                      "typeVersion":  3.1,
-                      "position":  [
-                                       880,
-                                       512
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "id":  "gemini-model",
-                      "name":  "Google Gemini Chat Model",
-                      "type":  "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-                      "typeVersion":  1,
-                      "position":  [
-                                       352,
-                                       688
-                                   ],
-                      "credentials":  null
-                  },
-                  {
-                      "parameters":  {
-                                         "sessionIdType":  "customKey",
-                                         "sessionKey":  "={{ $(\u0027Podgotovka vvoda\u0027).first().json.chatId }}",
-                                         "contextWindowLength":  15
-                                     },
-                      "id":  "session-memory",
-                      "name":  "Pamyat sessii",
-                      "type":  "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-                      "typeVersion":  1.3,
-                      "position":  [
-                                       1184,
-                                       688
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "jsCode":  "const aiResponse = $input.first().json.output;\nconst prepData = $(\u0027Podgotovka vvoda\u0027).first().json;\nconst chatId = prepData.chatId;\nconst callbackType = prepData.callbackType || \u0027text\u0027;\n\nlet text = aiResponse || \u0027Произошла ошибка. Попробуйте ещё раз.\u0027;\ntext = text.replace(/[\\*\\`\\[\\]]/g, \u0027\u0027);\ntext = text.replace(/_/g, \u0027 \u0027);\ntext = text.replace(/\\s{2,}/g, \u0027 \u0027);\n\nlet buttons = [];\nlet isOrder = false;\nlet clientName = \u0027\u0027;\nlet clientPhone = \u0027\u0027;\nlet orderText = \u0027\u0027;\nconst hasError = text.includes(\u0027ошибк\u0027) || text.includes(\u0027not defined\u0027) || text.includes(\u0027error\u0027);\nconst hasResults = text.includes(\u0027тенге\u0027) || text.includes(\u0027 тг\u0027) || text.includes(\u0027Артикул:\u0027);\nconst notFound = !hasResults \u0026\u0026 (text.includes(\u0027не найден\u0027) || text.includes(\u0027не удалось найти\u0027) || text.includes(\u0027не нашёл\u0027) || text.includes(\u0027не нашел\u0027) || text.includes(\u0027нет в каталоге\u0027) || text.includes(\u0027отсутствует\u0027));\n\nconst textLower = text.toLowerCase();\nif (!hasError \u0026\u0026 (text.includes(\u0027ORD-\u0027) || (textLower.includes(\u0027заказ\u0027) \u0026\u0026 textLower.includes(\u0027оформлен\u0027) \u0026\u0026 textLower.includes(\u0027менеджер\u0027)))) {\n  isOrder = true;\n  var nm = text.match(/Клиент[:\\s]+([^\\.,:;\\n]+)/i);\n  if (nm) clientName = nm[1].trim();\n  var ph = text.match(/Телефон[:\\s]+([^\\.,;\\s\\n]+)/i);\n  if (ph) clientPhone = ph[1].trim();\n  var userMsg = prepData.userMessage || \u0027\u0027;\n  if (!clientPhone) {\n    var phoneRx = userMsg.match(/(\\+?\\d[\\d\\s\\-]{7,})/);\n    if (phoneRx) clientPhone = phoneRx[1].replace(/[\\s\\-]/g, \u0027\u0027);\n  }\n  if (!clientName) {\n    var words = userMsg.split(/[,\\s]+/);\n    for (var w = 0; w \u003c words.length; w++) {\n      if (words[w].length \u003e 1 \u0026\u0026 !/^\\+?\\d/.test(words[w])) {\n        clientName = words[w];\n        break;\n      }\n    }\n  }\n  if (!clientName) clientName = prepData.firstName || \u0027\u0027;\n  if (clientName) {\n    var nameParts = clientName.split(/\\s+/);\n    if (nameParts.length \u003e= 2 \u0026\u0026 nameParts.every(function(p) { return p === nameParts[0]; })) {\n      clientName = nameParts[0];\n    }\n  }\n  if (clientName \u0026\u0026 clientName.length \u003e 1) {\n    var escaped = clientName.replace(/[.*+?^${}()|[\\]\\\\]/g, \u0027\\\\$\u0026\u0027);\n    var dupRx = new RegExp(\u0027(\u0027 + escaped + \u0027)(?:\\\\s+\\\\1)+\u0027, \u0027gi\u0027);\n    text = text.replace(dupRx, clientName);\n  }\n  orderText = text;\n  var cutIdx = text.search(/\\n?\\s*(Хочешь|Хотите|Желаете|Могу|Что-то|Нужна ли|Если нужн|Добавить ещё|Есть вопрос)/i);\n  if (cutIdx \u003e 0) {\n    orderText = text.substring(0, cutIdx).trim();\n  }\n  buttons = [\n    [{ text: \u0027\\u2705 Завершить\u0027, callback_data: \u0027finish\u0027 }],\n    [{ text: \u0027\\uD83D\\uDD0D Новый поиск\u0027, callback_data: \u0027new_search\u0027 }]\n  ];\n} else if (callbackType === \u0027confirm_order\u0027) {\n  buttons = [\n    [{ text: \u0027\\u274C Отменить заказ\u0027, callback_data: \u0027cancel_order\u0027 }]\n  ];\n} else if (callbackType === \u0027finish\u0027 || callbackType === \u0027cancel_order\u0027 || callbackType === \u0027contact_manager\u0027) {\n  buttons = [\n    [{ text: \u0027\\uD83D\\uDD0D Найти запчасть\u0027, callback_data: \u0027new_search\u0027 }]\n  ];\n} else if (notFound) {\n  buttons = [\n    [{ text: \u0027\\uD83D\\uDD0D Другой запрос\u0027, callback_data: \u0027new_search\u0027 }],\n    [{ text: \u0027\\uD83D\\uDCDE Связаться с менеджером\u0027, callback_data: \u0027contact_manager\u0027 }]\n  ];\n} else if (text.includes(\u0027одтверди\u0027) || text.includes(\u0027одтвержд\u0027) || text.includes(\u0027оформить заказ\u0027)) {\n  buttons = [\n    [{ text: \u0027\\u2705 Подтвердить заказ\u0027, callback_data: \u0027confirm_order\u0027 }],\n    [{ text: \u0027\\u2795 Добавить запчасти\u0027, callback_data: \u0027add_parts\u0027 }]\n  ];\n} else if (hasResults) {\n  buttons = [\n    [{ text: \u0027\\u2795 Добавить запчасти\u0027, callback_data: \u0027add_parts\u0027 }],\n    [{ text: \u0027\\uD83D\\uDD0D Другой поиск\u0027, callback_data: \u0027new_search\u0027 }]\n  ];\n} else if (text.includes(\u0027телефон\u0027) || text.includes(\u0027имя и номер\u0027)) {\n  buttons = [\n    [{ text: \u0027\\u274C Отменить заказ\u0027, callback_data: \u0027cancel_order\u0027 }]\n  ];\n} else if (callbackType === \u0027new_search\u0027 || callbackType === \u0027add_parts\u0027) {\n  buttons = [];\n} else if (text.includes(\u0027помогу подобрать\u0027) || text.includes(\u0027Здравствуйте\u0027) || text.includes(\u0027Добро пожаловать\u0027) || text.includes(\u0027Приветствую\u0027) || text.includes(\u0027чем помочь\u0027)) {\n  buttons = [\n    [{ text: \u0027\\uD83D\\uDD0D Найти запчасть\u0027, callback_data: \u0027new_search\u0027 }]\n  ];\n} else {\n  buttons = [\n    [{ text: \u0027\\uD83D\\uDD0D Найти запчасть\u0027, callback_data: \u0027new_search\u0027 }]\n  ];\n}\n\nreturn {\n  json: {\n    chat_id: chatId,\n    text: text,\n    reply_markup: { inline_keyboard: buttons },\n    isOrder: isOrder,\n    orderText: orderText,\n    clientName: clientName,\n    clientPhone: clientPhone\n  }\n};"
-                                     },
-                      "id":  "format-response",
-                      "name":  "Formatirovanie otveta",
-                      "type":  "n8n-nodes-base.code",
-                      "typeVersion":  2,
-                      "position":  [
-                                       1168,
-                                       416
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "method":  "POST",
-                                         "url":  "https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/sendMessage",
-                                         "sendBody":  true,
-                                         "bodyParameters":  {
-                                                                "parameters":  [
-                                                                                   {
-                                                                                       "name":  "chat_id",
-                                                                                       "value":  "={{ $json.chat_id }}"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "text",
-                                                                                       "value":  "={{ $json.text }}"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "reply_markup",
-                                                                                       "value":  "={{ JSON.stringify($json.reply_markup) }}"
-                                                                                   }
-                                                                               ]
-                                                            },
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "id":  "tg-send",
-                      "name":  "Otpravka v Telegram",
-                      "type":  "n8n-nodes-base.httpRequest",
-                      "typeVersion":  4.2,
-                      "position":  [
-                                       1360,
-                                       400
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "model":  {
-                                                       "__rl":  true,
-                                                       "value":  "gpt-5-nano",
-                                                       "mode":  "list",
-                                                       "cachedResultName":  "gpt-5-nano"
-                                                   },
-                                         "builtInTools":  {
-
-                                                          },
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "type":  "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-                      "typeVersion":  1.3,
-                      "position":  [
-                                       160,
-                                       656
-                                   ],
-                      "id":  "a86abcda-59b5-41ce-ab73-8d9228d57da1",
-                      "name":  "OpenAI Chat Model",
-                      "credentials":  null
-                  },
-                  {
-                      "parameters":  {
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "type":  "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
-                      "typeVersion":  1.2,
-                      "position":  [
-                                       336,
-                                       1120
-                                   ],
-                      "id":  "a84fb235-ab25-49b4-a0cc-7cdd6c9b9804",
-                      "name":  "Embeddings OpenAI",
-                      "credentials":  null
-                  },
-                  {
-                      "parameters":  {
-                                         "mode":  "retrieve-as-tool",
-                                         "toolDescription":  "Поиск автозапчастей по каталогу компании АвтоДеталь. Используй для поиска запчастей по названию детали, артикулу, бренду или модели автомобиля. Каталог содержит: тормозные колодки, диски, фильтры, свечи зажигания, амортизаторы, аккумуляторы, ремни ГРМ, масла, кузовные детали, рулевое управление и трансмиссию для Toyota Camry, Hyundai Tucson, Kia Sportage, Mercedes-Benz E-Class, BMW 5 Series. Ищи короткими запросами 2-4 слова. Возвращает артикул, название, бренд, цену и наличие.",
-                                         "pineconeIndex":  {
-                                                               "__rl":  true,
-                                                               "value":  "parts-catalogue",
-                                                               "mode":  "list",
-                                                               "cachedResultName":  "parts-catalogue"
-                                                           },
-                                         "topK":  10,
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "type":  "@n8n/n8n-nodes-langchain.vectorStorePinecone",
-                      "typeVersion":  1.3,
-                      "position":  [
-                                       592,
-                                       896
-                                   ],
-                      "id":  "aafcb851-225f-452c-8828-7a835e359fc1",
-                      "name":  "Poisk zapchastei (Pinecone)",
-                      "credentials":  null
-                  },
-                  {
-                      "parameters":  {
-                                         "description":  "Оформить заказ на выбранные запчасти. Используй когда клиент подтвердил выбор и предоставил контактные данные. Передай артикулы и названия запчастей с ценами в items, имя клиента в customer_name (ИМЕННО customer_name с подчеркиванием), номер телефона в phone.",
-                                         "jsCode":  "try {\n  var c = \u0027\u0027;\n  var p = \u0027\u0027;\n  var i = \u0027\u0027;\n  try { c = String(customer_name); } catch(e1) {}\n  if (!c) try { c = String(customername); } catch(e2) {}\n  if (!c) try { c = String(customerName); } catch(e3) {}\n  if (!c) try { c = String(name); } catch(e4) {}\n  try { p = String(phone); } catch(e5) {}\n  try { i = String(items); } catch(e6) {}\n  var n = Date.now();\n  var id = \u0027ORD-\u0027 + String(n).slice(-6);\n  return \u0027Заказ \u0027 + id + \u0027 успешно создан. Клиент: \u0027 + (c || \u0027Не указан\u0027) + \u0027. Телефон: \u0027 + (p || \u0027Не указан\u0027) + \u0027. Позиции: \u0027 + (i || \u0027Не указаны\u0027) + \u0027. Статус: Новый.\u0027;\n} catch(e) {\n  var n2 = Date.now();\n  var id2 = \u0027ORD-\u0027 + String(n2).slice(-6);\n  return \u0027Заказ \u0027 + id2 + \u0027 успешно создан. Статус: Новый. Детали уточнит менеджер.\u0027;\n}",
-                                         "specifyInputSchema":  true,
-                                         "jsonSchemaExample":  "{\"items\": \"BP-001 Тормозные колодки Brembo 12500 тг x1\", \"customer_name\": \"Иван\", \"phone\": \"87771234567\"}"
-                                     },
-                      "id":  "tool-order-code",
-                      "name":  "Oformlenie zakaza",
-                      "type":  "@n8n/n8n-nodes-langchain.toolCode",
-                      "typeVersion":  1.3,
-                      "position":  [
-                                       944,
-                                       896
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "conditions":  {
-                                                            "options":  {
-                                                                            "version":  2,
-                                                                            "leftValue":  "",
-                                                                            "caseSensitive":  true,
-                                                                            "typeValidation":  "strict"
-                                                                        },
-                                                            "combinator":  "and",
-                                                            "conditions":  [
-                                                                               {
-                                                                                   "id":  "1",
-                                                                                   "operator":  {
-                                                                                                    "type":  "boolean",
-                                                                                                    "operation":  "true",
-                                                                                                    "singleValue":  true
-                                                                                                },
-                                                                                   "leftValue":  "={{ $(\u0027Formatirovanie otveta\u0027).first().json.isOrder }}",
-                                                                                   "rightValue":  ""
-                                                                               }
-                                                                           ]
-                                                        },
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "id":  "order-check",
-                      "name":  "Order Check",
-                      "type":  "n8n-nodes-base.if",
-                      "typeVersion":  2.3,
-                      "position":  [
-                                       1600,
-                                       400
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "method":  "POST",
-                                         "url":  "https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/sendMessage",
-                                         "sendBody":  true,
-                                         "bodyParameters":  {
-                                                                "parameters":  [
-                                                                                   {
-                                                                                       "name":  "chat_id",
-                                                                                       "value":  "711463644"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "text",
-                                                                                       "value":  "={{ \u0027НОВЫЙ ЗАКАЗ ИЗ TELEGRAM БОТА!\\n\\n\u0027 + $(\u0027Formatirovanie otveta\u0027).first().json.orderText + \u0027\\n\\nВремя: \u0027 + $now.format(\u0027dd.MM.yyyy HH:mm\u0027) }}"
-                                                                                   }
-                                                                               ]
-                                                            },
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "id":  "send-manager",
-                      "name":  "Send Order to Manager",
-                      "type":  "n8n-nodes-base.httpRequest",
-                      "typeVersion":  4.2,
-                      "position":  [
-                                       1840,
-                                       304
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "operation":  "append",
-                                         "documentId":  {
-                                                            "__rl":  true,
-                                                            "value":  "1my0yEXxok_lguKq1XgiiNzY3kTE8SZn-AJ8fwjhGHU8",
-                                                            "mode":  "list",
-                                                            "cachedResultName":  "Заказы",
-                                                            "cachedResultUrl":  "https://docs.google.com/spreadsheets/d/1my0yEXxok_lguKq1XgiiNzY3kTE8SZn-AJ8fwjhGHU8/edit?usp=drivesdk"
-                                                        },
-                                         "sheetName":  {
-                                                           "__rl":  true,
-                                                           "value":  "gid=0",
-                                                           "mode":  "list",
-                                                           "cachedResultName":  "Список заказов",
-                                                           "cachedResultUrl":  "https://docs.google.com/spreadsheets/d/1my0yEXxok_lguKq1XgiiNzY3kTE8SZn-AJ8fwjhGHU8/edit#gid=0"
-                                                       },
-                                         "columns":  {
-                                                         "value":  {
-                                                                       "Дата":  "={{ $now.format(\u0027dd.MM.yyyy HH:mm\u0027) }}",
-                                                                       "Chat ID":  "={{ $(\u0027Podgotovka vvoda\u0027).first().json.chatId }}",
-                                                                       "Клиент":  "={{ $(\u0027Formatirovanie otveta\u0027).first().json.clientName }}",
-                                                                       "Контакты":  "={{ $(\u0027Formatirovanie otveta\u0027).first().json.clientPhone }}",
-                                                                       "Детали заказа":  "={{ $(\u0027Formatirovanie otveta\u0027).first().json.orderText }}",
-                                                                       "Статус":  "Новый"
-                                                                   },
-                                                         "schema":  [
-                                                                        {
-                                                                            "id":  "Дата",
-                                                                            "type":  "string",
-                                                                            "display":  true,
-                                                                            "required":  false,
-                                                                            "displayName":  "Дата",
-                                                                            "defaultMatch":  false,
-                                                                            "canBeUsedToMatch":  true
-                                                                        },
-                                                                        {
-                                                                            "id":  "Chat ID",
-                                                                            "type":  "string",
-                                                                            "display":  true,
-                                                                            "required":  false,
-                                                                            "displayName":  "Chat ID",
-                                                                            "defaultMatch":  false,
-                                                                            "canBeUsedToMatch":  true
-                                                                        },
-                                                                        {
-                                                                            "id":  "Клиент",
-                                                                            "type":  "string",
-                                                                            "display":  true,
-                                                                            "required":  false,
-                                                                            "displayName":  "Клиент",
-                                                                            "defaultMatch":  false,
-                                                                            "canBeUsedToMatch":  true
-                                                                        },
-                                                                        {
-                                                                            "id":  "Контакты",
-                                                                            "type":  "string",
-                                                                            "display":  true,
-                                                                            "required":  false,
-                                                                            "displayName":  "Контакты",
-                                                                            "defaultMatch":  false,
-                                                                            "canBeUsedToMatch":  true
-                                                                        },
-                                                                        {
-                                                                            "id":  "Детали заказа",
-                                                                            "type":  "string",
-                                                                            "display":  true,
-                                                                            "required":  false,
-                                                                            "displayName":  "Детали заказа",
-                                                                            "defaultMatch":  false,
-                                                                            "canBeUsedToMatch":  true
-                                                                        },
-                                                                        {
-                                                                            "id":  "Статус",
-                                                                            "type":  "string",
-                                                                            "display":  true,
-                                                                            "required":  false,
-                                                                            "displayName":  "Статус",
-                                                                            "defaultMatch":  false,
-                                                                            "canBeUsedToMatch":  true
-                                                                        }
-                                                                    ],
-                                                         "mappingMode":  "defineBelow",
-                                                         "matchingColumns":  [
-
-                                                                             ],
-                                                         "attemptToConvertTypes":  false,
-                                                         "convertFieldsToString":  true
-                                                     },
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "id":  "log-sheets",
-                      "name":  "Log Order to Sheets",
-                      "type":  "n8n-nodes-base.googleSheets",
-                      "typeVersion":  4.7,
-                      "position":  [
-                                       1856,
-                                       544
-                                   ],
-                      "credentials":  null
-                  },
-                  {
-                      "parameters":  {
-                                         "conditions":  {
-                                                            "options":  {
-                                                                            "version":  3,
-                                                                            "leftValue":  "",
-                                                                            "caseSensitive":  true,
-                                                                            "typeValidation":  "strict"
-                                                                        },
-                                                            "conditions":  [
-                                                                               {
-                                                                                   "id":  "1",
-                                                                                   "operator":  {
-                                                                                                    "type":  "boolean",
-                                                                                                    "operation":  "true",
-                                                                                                    "singleValue":  true
-                                                                                                },
-                                                                                   "leftValue":  "={{ $json.skipAI }}",
-                                                                                   "rightValue":  ""
-                                                                               }
-                                                                           ],
-                                                            "combinator":  "and"
-                                                        },
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "id":  "check-template",
-                      "name":  "Proverka shablona",
-                      "type":  "n8n-nodes-base.if",
-                      "typeVersion":  2.3,
-                      "position":  [
-                                       672,
-                                       400
-                                   ]
-                  },
-                  {
-                      "parameters":  {
-                                         "method":  "POST",
-                                         "url":  "https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/sendMessage",
-                                         "sendBody":  true,
-                                         "bodyParameters":  {
-                                                                "parameters":  [
-                                                                                   {
-                                                                                       "name":  "chat_id",
-                                                                                       "value":  "={{ $json.chatId }}"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "text",
-                                                                                       "value":  "={{ $json.templateText }}"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "reply_markup",
-                                                                                       "value":  "={{ $json.templateMarkup }}"
-                                                                                   }
-                                                                               ]
-                                                            },
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "id":  "send-template",
-                      "name":  "Otpravka shablona",
-                      "type":  "n8n-nodes-base.httpRequest",
-                      "typeVersion":  4.2,
-                      "position":  [
-                                       880,
-                                       208
-                                   ],
-                      "onError":  "continueRegularOutput"
-                  },
-                  {
-                      "parameters":  {
-                                         "method":  "POST",
-                                         "url":  "https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/editMessageReplyMarkup",
-                                         "sendBody":  true,
-                                         "bodyParameters":  {
-                                                                "parameters":  [
-                                                                                   {
-                                                                                       "name":  "chat_id",
-                                                                                       "value":  "={{ $json.chatId }}"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "message_id",
-                                                                                       "value":  "={{ $json.callbackMessageId }}"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "reply_markup",
-                                                                                       "value":  "={{ JSON.stringify({inline_keyboard: [[{text: \u0027\\u23F3 \\u041e\\u0431\\u0440\\u0430\\u0431\\u043e\\u0442\\u043a\\u0430...\u0027, callback_data: \u0027noop\u0027}]]}) }}"
-                                                                                   }
-                                                                               ]
-                                                            },
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "id":  "remove-buttons",
-                      "name":  "Udalit knopki",
-                      "type":  "n8n-nodes-base.httpRequest",
-                      "typeVersion":  4.2,
-                      "position":  [
-                                       672,
-                                       656
-                                   ],
-                      "continueOnFail":  true
-                  },
-                  {
-                      "parameters":  {
-                                         "method":  "POST",
-                                         "url":  "https://b24-25042o.bitrix24.kz/rest/1/8kzhu85k239mk0em/crm.lead.add",
-                                         "sendBody":  true,
-                                         "bodyParameters":  {
-                                                                "parameters":  [
-                                                                                   {
-                                                                                       "name":  "fields[TITLE]",
-                                                                                       "value":  "={{ \u0027Заказ запчасти - \u0027 + $(\u0027Formatirovanie otveta\u0027).first().json.clientName }}"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "fields[NAME]",
-                                                                                       "value":  "={{ $(\u0027Formatirovanie otveta\u0027).first().json.clientName }}"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "fields[PHONE][0][VALUE]",
-                                                                                       "value":  "={{ $(\u0027Formatirovanie otveta\u0027).first().json.clientPhone }}"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "fields[PHONE][0][VALUE_TYPE]",
-                                                                                       "value":  "WORK"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "fields[COMMENTS]",
-                                                                                       "value":  "={{ $(\u0027Formatirovanie otveta\u0027).first().json.orderText + \u0027\\n\\nTelegram Chat ID: \u0027 + $(\u0027Podgotovka vvoda\u0027).first().json.chatId }}"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "fields[SOURCE_ID]",
-                                                                                       "value":  "OTHER"
-                                                                                   },
-                                                                                   {
-                                                                                       "name":  "fields[STATUS_ID]",
-                                                                                       "value":  "NEW"
-                                                                                   }
-                                                                               ]
-                                                            },
-                                         "options":  {
-
-                                                     }
-                                     },
-                      "id":  "bitrix24-lead",
-                      "name":  "Bitrix24 - Sozdat lid",
-                      "type":  "n8n-nodes-base.httpRequest",
-                      "typeVersion":  4.2,
-                      "position":  [
-                                       1840,
-                                       720
-                                   ],
-                      "continueOnFail":  true
-                  }
-              ]
+{
+  "name": "🛒 ИИ Продажник - Автозапчасти MVP",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "autoparts-bot",
+        "responseMode": "onReceived",
+        "responseData": "firstEntryJson",
+        "options": {}
+      },
+      "id": "tg-trigger",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        208,
+        400
+      ],
+      "webhookId": "d21723bb-48fd-46bc-a952-736a9c163ffa"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json;\nconst data = raw.body || raw;\nlet userMessage = '';\nlet chatId = '';\nlet firstName = '';\nlet callbackType = 'text';\nlet callbackData = null;\nlet skipAI = false;\nlet templateText = '';\nlet templateMarkup = '';\nlet callbackMessageId = null;\n\nif (data.callback_query) {\n  chatId = String(data.callback_query.message.chat.id);\n  firstName = data.callback_query.from.first_name || '';\n  callbackData = data.callback_query.data;\n  callbackMessageId = data.callback_query.message.message_id;\n\n  if (callbackData === 'noop') {\n    skipAI = true;\n    callbackType = 'noop';\n  } else {\n    const callbackMap = {\n      'confirm_order': 'Да, хочу оформить заказ на эти запчасти',\n      'cancel_order': 'Отменить заказ',\n      'new_search': 'Хочу найти другую запчасть',\n      'add_parts': 'Хочу добавить ещё запчасти к заказу',\n      'contact_manager': 'Хочу связаться с менеджером напрямую',\n      'finish': 'Спасибо, завершить диалог'\n    };\n    if (callbackMap[callbackData]) {\n      callbackType = callbackData;\n      userMessage = callbackMap[callbackData];\n    } else {\n      callbackType = 'callback';\n      userMessage = callbackData;\n    }\n  }\n} else if (data.message) {\n  chatId = String(data.message.chat.id);\n  firstName = data.message.from.first_name || '';\n  userMessage = data.message.text || '/start';\n  if (data.message.contact) {\n    callbackType = 'contact';\n    userMessage = 'Мой номер телефона: ' + data.message.contact.phone_number;\n  }\n}\n\nvar templates = {\n  '_start': {\n    text: 'Здравствуйте🙋‍��️! Я - консультант АвтоДеталь. Я помогу подобрать запчасти для вашего автомобиля. Укажите марку, модель авто и какая деталь нужна🚗.',\n    buttons: [[{text: '\\uD83D\\uDD0D Найти запчасть', callback_data: 'new_search'}]]\n  },\n  'new_search': {\n    text: 'Какую запчасть ищем? Укажите название детали и марку/модель авто.\\nНапример: колодки Toyota Camry 2018',\n    buttons: []\n  },\n  'add_parts': {\n    text: 'Какую запчасть добавить к заказу? Укажите название детали (2-3 слова).\\nНапример: масляный фильтр Camry',\n    buttons: []\n  },\n  'cancel_order': {\n    text: 'Заказ отменён. Если передумаете — я на связи!',\n    buttons: [[{text: '\\uD83D\\uDD0D Найти запчасть', callback_data: 'new_search'}]]\n  },\n  'finish': {\n    text: 'Спасибо за заказ! Менеджер свяжется с вами в ближайшее время. До встречи!',\n    buttons: [[{text: '\\uD83D\\uDD0D Найти запчасть', callback_data: 'new_search'}]]\n  },\n  'contact_manager': {\n    text: 'Свяжитесь с нашим менеджером:\\nТелефон: +7 711 463 6644\\nМы ответим в рабочее время (09:00-18:00).',\n    buttons: [[{text: '\\uD83D\\uDD0D Найти запчасть', callback_data: 'new_search'}]]\n  }\n};\n\nvar templateKey = '';\nif (userMessage === '/start') {\n  templateKey = '_start';\n} else if (templates[callbackType]) {\n  templateKey = callbackType;\n}\n\nif (templateKey) {\n  skipAI = true;\n  var t = templates[templateKey];\n  templateText = t.text;\n  templateMarkup = JSON.stringify({inline_keyboard: t.buttons});\n}\n\nreturn {\n  json: {\n    userMessage,\n    chatId,\n    firstName,\n    callbackType,\n    callbackData,\n    skipAI,\n    templateText,\n    templateMarkup,\n    callbackMessageId\n  }\n};"
+      },
+      "id": "prep-input",
+      "name": "Podgotovka vvoda",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.userMessage }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=Ты — профессиональный консультант по продаже автозапчастей компании \"АвтоДеталь\". Твоя задача — помочь клиенту подобрать нужные запчасти и оформить заказ.\n\nПРАВИЛА ОБЩЕНИЯ:\n- Отвечай ТОЛЬКО на русском языке\n- Будь вежлив, профессионален и лаконичен (3-5 строк максимум)\n- НЕ используй символы Markdown: * _ ` [ ]\n- Используй эмодзи умеренно для дружелюбности\n\nСЦЕНАРИЙ РАБОТЫ:\n1. Приветствуй клиента и спроси какая запчасть нужна\n2. Уточни: марка и модель авто, год выпуска, какая деталь нужна\n3. Используй инструмент search_parts для поиска по каталогу. Ищи короткими запросами: название детали + марка авто (2-3 слова)\n4. Представь клиенту найденные варианты с ценами\n5. Спроси клиента: хочет ли он добавить ещё запчасти или готов оформить заказ\n6. Если клиент хочет добавить — повтори поиск для новых деталей\n7. Когда клиент готов оформить — спроси имя и номер телефона для связи\n8. Используй create_order для оформления заказа. ПЕРЕДАЙ ПАРАМЕТРЫ ТОЧНО ТАК: items, customer_name, phone\n9. Подтверди заказ клиенту. ОБЯЗАТЕЛЬНО укажи в подтверждении: Клиент: (имя). Телефон: (номер). Номер заказа, все позиции с ценами, ИТОГОВУЮ СУММУ, и сообщи что менеджер свяжется в ближайшее время\n\nЕСЛИ ЗАПЧАСТЬ НЕ НАЙДЕНА:\n- Попробуй искать короче: только название детали или только марку авто\n- Предложи уточнить запрос или указать артикул\n- Предложи оставить заявку — менеджер подберет вручную\n\nВАЖНО:\n- Всегда используй search_parts перед тем как называть цены или наличие\n- Не выдумывай цены и наличие — бери только данные из каталога\n- При оформлении заказа обязательно собери: имя и телефон клиента\n- ВСЕГДА указывай ИТОГОВУЮ СУММУ заказа при подтверждении\n- Если клиент пишет /start — поприветствуй и спроси чем помочь"
+        }
+      },
+      "id": "ai-agent",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        880,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "gemini-model",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        352,
+        688
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Podgotovka vvoda').first().json.chatId }}",
+        "contextWindowLength": 15
+      },
+      "id": "session-memory",
+      "name": "Pamyat sessii",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1184,
+        688
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const aiResponse = $input.first().json.output;\nconst prepData = $('Podgotovka vvoda').first().json;\nconst chatId = prepData.chatId;\nconst callbackType = prepData.callbackType || 'text';\n\nlet text = aiResponse || 'Произошла ошибка. Попробуйте ещё раз.';\ntext = text.replace(/[\\*\\`\\[\\]]/g, '');\ntext = text.replace(/_/g, ' ');\ntext = text.replace(/\\s{2,}/g, ' ');\n\nlet buttons = [];\nlet isOrder = false;\nlet clientName = '';\nlet clientPhone = '';\nlet orderText = '';\nconst hasError = text.includes('ошибк') || text.includes('not defined') || text.includes('error');\nconst hasResults = text.includes('тенге') || text.includes(' тг') || text.includes('Артикул:');\nconst notFound = !hasResults && (text.includes('не найден') || text.includes('не удалось найти') || text.includes('не нашёл') || text.includes('не нашел') || text.includes('нет в каталоге') || text.includes('отсутствует'));\n\nconst textLower = text.toLowerCase();\nif (!hasError && (text.includes('ORD-') || (textLower.includes('заказ') && textLower.includes('оформлен') && textLower.includes('менеджер')))) {\n  isOrder = true;\n  var nm = text.match(/Клиент[:\\s]+([^\\.,:;\\n]+)/i);\n  if (nm) clientName = nm[1].trim();\n  var ph = text.match(/Телефон[:\\s]+([^\\.,;\\s\\n]+)/i);\n  if (ph) clientPhone = ph[1].trim();\n  var userMsg = prepData.userMessage || '';\n  if (!clientPhone) {\n    var phoneRx = userMsg.match(/(\\+?\\d[\\d\\s\\-]{7,})/);\n    if (phoneRx) clientPhone = phoneRx[1].replace(/[\\s\\-]/g, '');\n  }\n  if (!clientName) {\n    var words = userMsg.split(/[,\\s]+/);\n    for (var w = 0; w < words.length; w++) {\n      if (words[w].length > 1 && !/^\\+?\\d/.test(words[w])) {\n        clientName = words[w];\n        break;\n      }\n    }\n  }\n  if (!clientName) clientName = prepData.firstName || '';\n  if (clientName) {\n    var nameParts = clientName.split(/\\s+/);\n    if (nameParts.length >= 2 && nameParts.every(function(p) { return p === nameParts[0]; })) {\n      clientName = nameParts[0];\n    }\n  }\n  if (clientName && clientName.length > 1) {\n    var escaped = clientName.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\n    var dupRx = new RegExp('(' + escaped + ')(?:\\\\s+\\\\1)+', 'gi');\n    text = text.replace(dupRx, clientName);\n  }\n  orderText = text;\n  var cutIdx = text.search(/\\n?\\s*(Хочешь|Хотите|Желаете|Могу|Что-то|Нужна ли|Если нужн|Добавить ещё|Есть вопрос)/i);\n  if (cutIdx > 0) {\n    orderText = text.substring(0, cutIdx).trim();\n  }\n  buttons = [\n    [{ text: '\\u2705 Завершить', callback_data: 'finish' }],\n    [{ text: '\\uD83D\\uDD0D Новый поиск', callback_data: 'new_search' }]\n  ];\n} else if (callbackType === 'confirm_order') {\n  buttons = [\n    [{ text: '\\u274C Отменить заказ', callback_data: 'cancel_order' }]\n  ];\n} else if (callbackType === 'finish' || callbackType === 'cancel_order' || callbackType === 'contact_manager') {\n  buttons = [\n    [{ text: '\\uD83D\\uDD0D Найти запчасть', callback_data: 'new_search' }]\n  ];\n} else if (notFound) {\n  buttons = [\n    [{ text: '\\uD83D\\uDD0D Другой запрос', callback_data: 'new_search' }],\n    [{ text: '\\uD83D\\uDCDE Связаться с менеджером', callback_data: 'contact_manager' }]\n  ];\n} else if (text.includes('одтверди') || text.includes('одтвержд') || text.includes('оформить заказ')) {\n  buttons = [\n    [{ text: '\\u2705 Подтвердить заказ', callback_data: 'confirm_order' }],\n    [{ text: '\\u2795 Добавить запчасти', callback_data: 'add_parts' }]\n  ];\n} else if (hasResults) {\n  buttons = [\n    [{ text: '\\u2795 Добавить запчасти', callback_data: 'add_parts' }],\n    [{ text: '\\uD83D\\uDD0D Другой поиск', callback_data: 'new_search' }]\n  ];\n} else if (text.includes('телефон') || text.includes('имя и номер')) {\n  buttons = [\n    [{ text: '\\u274C Отменить заказ', callback_data: 'cancel_order' }]\n  ];\n} else if (callbackType === 'new_search' || callbackType === 'add_parts') {\n  buttons = [];\n} else if (text.includes('помогу подобрать') || text.includes('Здравствуйте') || text.includes('Добро пожаловать') || text.includes('Приветствую') || text.includes('чем помочь')) {\n  buttons = [\n    [{ text: '\\uD83D\\uDD0D Найти запчасть', callback_data: 'new_search' }]\n  ];\n} else {\n  buttons = [\n    [{ text: '\\uD83D\\uDD0D Найти запчасть', callback_data: 'new_search' }]\n  ];\n}\n\nreturn {\n  json: {\n    chat_id: chatId,\n    text: text,\n    reply_markup: { inline_keyboard: buttons },\n    isOrder: isOrder,\n    orderText: orderText,\n    clientName: clientName,\n    clientPhone: clientPhone\n  }\n};"
+      },
+      "id": "format-response",
+      "name": "Formatirovanie otveta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1168,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $json.chat_id }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.text }}"
+            },
+            {
+              "name": "reply_markup",
+              "value": "={{ JSON.stringify($json.reply_markup) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "tg-send",
+      "name": "Otpravka v Telegram",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-5-nano"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        160,
+        656
+      ],
+      "id": "a86abcda-59b5-41ce-ab73-8d9228d57da1",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        1120
+      ],
+      "id": "a84fb235-ab25-49b4-a0cc-7cdd6c9b9804",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Поиск автозапчастей по каталогу компании АвтоДеталь. Используй для поиска запчастей по названию детали, артикулу, бренду или модели автомобиля. Каталог содержит: тормозные колодки, диски, фильтры, свечи зажигания, амортизаторы, аккумуляторы, ремни ГРМ, масла, кузовные детали, рулевое управление и трансмиссию для Toyota Camry, Hyundai Tucson, Kia Sportage, Mercedes-Benz E-Class, BMW 5 Series. Ищи короткими запросами 2-4 слова. Возвращает артикул, название, бренд, цену и наличие.",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "parts-catalogue",
+          "mode": "list",
+          "cachedResultName": "parts-catalogue"
+        },
+        "topK": 10,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        592,
+        896
+      ],
+      "id": "aafcb851-225f-452c-8828-7a835e359fc1",
+      "name": "Poisk zapchastei (Pinecone)",
+      "credentials": {
+        "pineconeApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Оформить заказ на выбранные запчасти. Используй когда клиент подтвердил выбор и предоставил контактные данные. Передай артикулы и названия запчастей с ценами в items, имя клиента в customer_name (ИМЕННО customer_name с подчеркиванием), номер телефона в phone.",
+        "jsCode": "try {\n  var c = '';\n  var p = '';\n  var i = '';\n  try { c = String(customer_name); } catch(e1) {}\n  if (!c) try { c = String(customername); } catch(e2) {}\n  if (!c) try { c = String(customerName); } catch(e3) {}\n  if (!c) try { c = String(name); } catch(e4) {}\n  try { p = String(phone); } catch(e5) {}\n  try { i = String(items); } catch(e6) {}\n  var n = Date.now();\n  var id = 'ORD-' + String(n).slice(-6);\n  return 'Заказ ' + id + ' успешно создан. Клиент: ' + (c || 'Не указан') + '. Телефон: ' + (p || 'Не указан') + '. Позиции: ' + (i || 'Не указаны') + '. Статус: Новый.';\n} catch(e) {\n  var n2 = Date.now();\n  var id2 = 'ORD-' + String(n2).slice(-6);\n  return 'Заказ ' + id2 + ' успешно создан. Статус: Новый. Детали уточнит менеджер.';\n}",
+        "specifyInputSchema": true,
+        "jsonSchemaExample": "{\"items\": \"BP-001 Тормозные колодки Brembo 12500 тг x1\", \"customer_name\": \"Иван\", \"phone\": \"87771234567\"}"
+      },
+      "id": "tool-order-code",
+      "name": "Oformlenie zakaza",
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        944,
+        896
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "1",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "leftValue": "={{ $('Formatirovanie otveta').first().json.isOrder }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "order-check",
+      "name": "Order Check",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1600,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "YOUR_MANAGER_CHAT_ID"
+            },
+            {
+              "name": "text",
+              "value": "={{ 'НОВЫЙ ЗАКАЗ ИЗ TELEGRAM БОТА!\\n\\n' + $('Formatirovanie otveta').first().json.orderText + '\\n\\nВремя: ' + $now.format('dd.MM.yyyy HH:mm') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "send-manager",
+      "name": "Send Order to Manager",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Заказы",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Список заказов",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_ID/edit#gid=0"
+        },
+        "columns": {
+          "value": {
+            "Дата": "={{ $now.format('dd.MM.yyyy HH:mm') }}",
+            "Chat ID": "={{ $('Podgotovka vvoda').first().json.chatId }}",
+            "Клиент": "={{ $('Formatirovanie otveta').first().json.clientName }}",
+            "Контакты": "={{ $('Formatirovanie otveta').first().json.clientPhone }}",
+            "Детали заказа": "={{ $('Formatirovanie otveta').first().json.orderText }}",
+            "Статус": "Новый"
+          },
+          "schema": [
+            {
+              "id": "Дата",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "displayName": "Дата",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chat ID",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "displayName": "Chat ID",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Клиент",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "displayName": "Клиент",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Контакты",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "displayName": "Контакты",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Детали заказа",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "displayName": "Детали заказа",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Статус",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "displayName": "Статус",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ],
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "id": "log-sheets",
+      "name": "Log Order to Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1856,
+        544
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 3,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.skipAI }}",
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-template",
+      "name": "Proverka shablona",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $json.chatId }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.templateText }}"
+            },
+            {
+              "name": "reply_markup",
+              "value": "={{ $json.templateMarkup }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "send-template",
+      "name": "Otpravka shablona",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        208
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/editMessageReplyMarkup",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $json.chatId }}"
+            },
+            {
+              "name": "message_id",
+              "value": "={{ $json.callbackMessageId }}"
+            },
+            {
+              "name": "reply_markup",
+              "value": "={{ JSON.stringify({inline_keyboard: [[{text: '\\u23F3 \\u041e\\u0431\\u0440\\u0430\\u0431\\u043e\\u0442\\u043a\\u0430...', callback_data: 'noop'}]]}) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "remove-buttons",
+      "name": "Udalit knopki",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        672,
+        656
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://YOUR_BITRIX24_DOMAIN/rest/1/YOUR_WEBHOOK_TOKEN/crm.lead.add",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "fields[TITLE]",
+              "value": "={{ 'Заказ запчасти - ' + $('Formatirovanie otveta').first().json.clientName }}"
+            },
+            {
+              "name": "fields[NAME]",
+              "value": "={{ $('Formatirovanie otveta').first().json.clientName }}"
+            },
+            {
+              "name": "fields[PHONE][0][VALUE]",
+              "value": "={{ $('Formatirovanie otveta').first().json.clientPhone }}"
+            },
+            {
+              "name": "fields[PHONE][0][VALUE_TYPE]",
+              "value": "WORK"
+            },
+            {
+              "name": "fields[COMMENTS]",
+              "value": "={{ $('Formatirovanie otveta').first().json.orderText + '\\n\\nTelegram Chat ID: ' + $('Podgotovka vvoda').first().json.chatId }}"
+            },
+            {
+              "name": "fields[SOURCE_ID]",
+              "value": "OTHER"
+            },
+            {
+              "name": "fields[STATUS_ID]",
+              "value": "NEW"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bitrix24-lead",
+      "name": "Bitrix24 - Sozdat lid",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        720
+      ],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Podgotovka vvoda",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Pamyat sessii": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Formatirovanie otveta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatirovanie otveta": {
+      "main": [
+        [
+          {
+            "node": "Otpravka v Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Poisk zapchastei (Pinecone)",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Poisk zapchastei (Pinecone)": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Oformlenie zakaza": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Otpravka v Telegram": {
+      "main": [
+        [
+          {
+            "node": "Order Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Order Check": {
+      "main": [
+        [
+          {
+            "node": "Send Order to Manager",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Log Order to Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Bitrix24 - Sozdat lid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Podgotovka vvoda": {
+      "main": [
+        [
+          {
+            "node": "Proverka shablona",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Udalit knopki",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Proverka shablona": {
+      "main": [
+        [
+          {
+            "node": "Otpravka shablona",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Almaty",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "tags": [],
+  "activeVersion": null
 }
-
